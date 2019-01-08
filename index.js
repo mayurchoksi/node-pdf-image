@@ -85,12 +85,22 @@ PDFImage.prototype = {
     var pdfFilePath = this.pdfFilePath;
     var outputImagePath = this.getOutputImagePathForPage(pageNumber);
     var convertOptionsString = this.constructConvertOptions();
-    return util.format(
-      "%s %s\"%s[%d]\" \"%s\"",
-      this.useGM ? "gm convert" : "convert",
-      convertOptionsString ? convertOptionsString + " " : "",
-      pdfFilePath, pageNumber, outputImagePath
-    );
+    
+    if(util.types.isNumberObject(pageNumber)) {
+      return util.format(
+        "%s %s\"%s[%d]\" \"%s\"",
+        this.useGM ? "gm convert" : "convert",
+        convertOptionsString ? convertOptionsString + " " : "",
+        pdfFilePath, pageNumber, outputImagePath
+      );
+    } else {
+      return util.format(
+        "%s %s\"%s\" \"%s\"",
+        this.useGM ? "gm convert" : "convert",
+        convertOptionsString ? convertOptionsString + " " : "",
+        pdfFilePath, outputImagePath
+      );
+    }
   },
   constructCombineCommandForFile: function (imagePaths) {
     return util.format(
